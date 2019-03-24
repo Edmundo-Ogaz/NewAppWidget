@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -211,7 +212,8 @@ public class NewAppWidget extends AppWidgetProvider {
         }
 
         views.setTextViewText(R.id.tSunRise, timeSunRise);
-        views.setTextViewText(R.id.tSunSet, timeSunSet);
+        //views.setTextViewText(R.id.tSunSet, timeSunSet);
+        views.setTextViewText(R.id.tSunSet, new SimpleDateFormat("dd-mm-yyyy HH:mm:ss").format(cal.getTime()));
         views.setTextViewText(R.id.tTattva, tTattva);
         views.setTextViewText(R.id.tNextTattva, tNextTattva);
         views.setTextViewText(R.id.tRemain, tTimeRemain);
@@ -221,13 +223,14 @@ public class NewAppWidget extends AppWidgetProvider {
 
         //Refresh
         Intent refreshIntent = new Intent(context, NewAppWidget.class);
-        refreshIntent.setAction(NewAppWidget.REFRESH_ACTION);
+        refreshIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{appWidgetId});
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.imageView3, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     public static double[] makeSunRise(int day, double latitude, double longitude) {
@@ -305,50 +308,13 @@ public class NewAppWidget extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-
-        if (intent.getAction().equals(NewAppWidget.REFRESH_ACTION)) {
-            Bundle extras = intent.getExtras();
-            if (extras != null) {
-                int[] appWidgetIds = extras.getIntArray(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-
-                if (appWidgetIds != null && appWidgetIds.length > 0) {
-                    this.onUpdate(context, AppWidgetManager.getInstance(context), appWidgetIds);
-                }
-            }
-        }
-
-    }
-
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                         int[] appWidgetIds) {
+        // There may be multiple widgets active, so update all of them.
         for (int appWidgetId : appWidgetIds) {
-            System.out.println("onUPDATE");
-
-            /*RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget2);
-
-            //Refresh
-            Intent refreshIntent = new Intent(context, NewAppWidget.class);
-            refreshIntent.setAction(NewAppWidget.REFRESH_ACTION);
-            refreshIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, refreshIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.imageView3, pendingIntent);
-            appWidgetManager.updateAppWidget(appWidgetId, views);*/
-
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
-    @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
 }
 
