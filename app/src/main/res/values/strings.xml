@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">NewAppWidget</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="h_sr">Sunrise:</string>
+    <string name="h_ss">Sunset:</string>
+    <string name="h_tt">Tattva:</string>
+    <string name="h_nt">Next tattva:</string>
+
+    <string name="widget_id">App Widget ID\u0020</string>
+    <string name="URL">Tap to launch URL</string>
+
+    <string name="tat1">Akaza</string>
+    <string name="tat2">Vayu</string>
+    <string name="tat3">Tejas</string>
+    <string name="tat4">Prithivi</string>
+    <string name="tat5">Apas</string>
+    <string name="tat6">Adi</string>
+    <string name="tat7">Samadhi</string>
+
+    <string name="tatvaEnd1">To end of this tatva remains</string>
+    <string name="tatvaEnd2">To end of this tatva remains less than minute</string>
+</resources>
